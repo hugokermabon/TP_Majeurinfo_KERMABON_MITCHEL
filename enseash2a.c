@@ -35,7 +35,7 @@ int main() {
             if (strlen(buffer)==0){
                 execlp("date","date", (char*)NULL);
             }
-            perror("enseash");  // execlp a échoué
+            
             exit(EXIT_SUCCESS); // Utiliser EXIT_FAILURE en cas d'échec
         }
     }
