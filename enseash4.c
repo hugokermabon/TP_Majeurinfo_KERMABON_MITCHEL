@@ -33,11 +33,11 @@ int main() {
         if (PID != 0) {
             wait(&status);
               if (WIFEXITED(status)) {
-                sprintf(Fils_Termine,"[exit :%d]", WEXITSTATUS(status));
+                sprintf(Fils_Termine,"[exit :%d]\n", WEXITSTATUS(status));
                 write(1,Fils_Termine,strlen(Fils_Termine));
                 } 
             else if (WIFSIGNALED(status)) {
-                sprintf(Fils_Arrete,"[sign :%d]", WTERMSIG(status));
+                sprintf(Fils_Arrete,"[sign :%d]\n", WTERMSIG(status));
                 write(1,Fils_Arrete,strlen(Fils_Arrete));
                 }
     }
