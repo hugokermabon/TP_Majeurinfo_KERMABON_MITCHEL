@@ -19,8 +19,12 @@ int main() {
         int PID, status, commande;
 
           // Utiliser STDIN_FILENO pour lire depuis l'entrée standard
-
-        if 
+        commande=read(STDIN_FILENO, buffer, BUFSIZE);//L'utilisateur écrit dans buffer
+        buffer[commande-1]='\0';
+        if (strcmp("exit",buffer)==0||commande==0){ //on compte les différences entre le buffer et le mot "exit"
+            write(1,"Bye, bye...", strlen("Bye, bye..."));
+            exit(EXIT_FAILURE);
+        }
 
         PID = fork();
 
@@ -28,8 +32,8 @@ int main() {
             wait(&status);
         } else {
             
-            commande=read(STDIN_FILENO, buffer, BUFSIZE);//L'utilisateur écrit dans buffer
-            buffer[commande-1]='\0';
+            
+           
             execlp(buffer,buffer, (char*)NULL); 
             
             if (strlen(buffer)==0){
