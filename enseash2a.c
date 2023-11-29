@@ -13,20 +13,27 @@ int main() {
     write(STDOUT_FILENO, buf, strlen(buf));
 
     while (1) {
-        int PID, status;
+
+        write(1,"% ", strlen("% "));
+
+        int PID, status, commande;
 
           // Utiliser STDIN_FILENO pour lire depuis l'entrée standard
 
-        // Supprimer le caractère de nouvelle ligne lu par read
-        buffer[strcspn(buffer, "\n")] = '\0';
+        
 
         PID = fork();
 
         if (PID != 0) {
             wait(&status);
         } else {
-            read(STDIN_FILENO, buffer, BUFSIZE);
+            
+            commande=read(STDIN_FILENO, buffer, BUFSIZE);
+            buffer[commande-1]='\0';
             execlp(buffer,buffer, (char*)NULL);  
+            if (strlen(buffer)==2){
+                execlp("date","date", (char*)NULL);
+            }
             perror("enseash");  // execlp a échoué
             exit(EXIT_SUCCESS); // Utiliser EXIT_FAILURE en cas d'échec
         }
