@@ -28,14 +28,15 @@ int main() {
             wait(&status);
         } else {
             
-            commande=read(STDIN_FILENO, buffer, BUFSIZE);
+            commande=read(STDIN_FILENO, buffer, BUFSIZE);//L'utilisateur écrit dans buffer
             buffer[commande-1]='\0';
-            execlp(buffer,buffer, (char*)NULL);  
+            execlp(buffer,buffer, (char*)NULL); 
             
             if (strlen(buffer)==0){
                 execlp("date","date", (char*)NULL);
             }
             
+
             exit(EXIT_SUCCESS); // Utiliser EXIT_FAILURE en cas d'échec
         }
     }
