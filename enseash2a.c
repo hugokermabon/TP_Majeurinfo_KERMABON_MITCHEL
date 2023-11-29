@@ -31,7 +31,8 @@ int main() {
             commande=read(STDIN_FILENO, buffer, BUFSIZE);
             buffer[commande-1]='\0';
             execlp(buffer,buffer, (char*)NULL);  
-            if (strlen(buffer)==2){
+            
+            if (strlen(buffer)==0){
                 execlp("date","date", (char*)NULL);
             }
             perror("enseash");  // execlp a échoué
