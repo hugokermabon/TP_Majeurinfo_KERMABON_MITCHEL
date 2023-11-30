@@ -1,3 +1,4 @@
+//For more readability we wont put the same commentaries all over again
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,6 +8,7 @@
 #define BUFSIZE 1096
 
 char buffer[BUFSIZE];
+//Création des char qui vont accueillir les différents write
 char Fils_Termine[BUFSIZE];
 char Fils_Arrete[BUFSIZE];
 
@@ -32,10 +34,13 @@ int main() {
 
         if (PID != 0) {
             wait(&status);
+            //When the child process ends normally, we go in the following loop
+            //Frome here thanks to sprintf we create the wanted char with the wanted status of termination
               if (WIFEXITED(status)) {
                 sprintf(Fils_Termine,"[exit :%d]\n", WEXITSTATUS(status));
                 write(1,Fils_Termine,strlen(Fils_Termine));
                 } 
+            //The same is done for the case where the child is interrupted by an signal
             else if (WIFSIGNALED(status)) {
                 sprintf(Fils_Arrete,"[sign :%d]\n", WTERMSIG(status));
                 write(1,Fils_Arrete,strlen(Fils_Arrete));
