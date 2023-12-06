@@ -5,6 +5,7 @@
 #include <sys/wait.h>
 #include <time.h>
 
+
 #define BUFSIZE 1096
 struct timespec start, end;//We define start and end to measure the time between the beginning and the end of the process
 
