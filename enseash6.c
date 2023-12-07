@@ -7,27 +7,27 @@
 
 #define BUFSIZE 1096
 
+//everything that will be used is defined or initialized here 
 struct timespec start, end;
 char buffer[BUFSIZE];
 char Fils_Termine[BUFSIZE];
 char Fils_Arrete[BUFSIZE];
-char buffComplex[BUFSIZE];
 
 int main() {
     char buf[BUFSIZE] = "Bienvenue dans le Shell ENSEA. \nPour quitter, \ntapez 'exit'.\nenseash % \n";
     write(STDOUT_FILENO, buf, strlen(buf));
 
     while (1) {
-        write(STDOUT_FILENO, "% ", strlen("% "));  // Utilisez STDOUT_FILENO pour la sortie standard
-
-        int PID, status, commande, k = 0;
+        write(STDOUT_FILENO, "% ", strlen("% "));
+        //Variables initializations
+        int PID, status, commande;
 
         commande = read(STDIN_FILENO, buffer, BUFSIZE);
         buffer[commande - 1] = '\0';
 
         if (strcmp("exit", buffer) == 0 || commande == 0) {
             write(STDOUT_FILENO, "Bye, bye...", strlen("Bye, bye..."));
-            exit(EXIT_SUCCESS);  // Utilisez EXIT_SUCCESS pour une sortie réussie
+            exit(EXIT_SUCCESS);
         }
 
         clock_gettime(CLOCK_MONOTONIC, &start);
@@ -48,22 +48,32 @@ int main() {
                 write(STDOUT_FILENO, Fils_Arrete, strlen(Fils_Arrete));
             }
         } else {
-            k = 0;
-            buffComplex[k] = strtok(buffer, " ");
-            while (buffComplex[k] != NULL) {
-                k++;
-                buffComplex[k] = strtok(NULL, " ");
-            }
-            execvp(buffComplex[0], buffComplex);
+            // We use strtok and execvp to differentiate the function and it's arguments 
+            char *token = strtok(buffer, " ");
+            char *args[BUFSIZE];
+            int i = 0;
 
-            if (strlen(buffer) == 0) {
-                execlp("date", "date", (char *)NULL);
+            while (token != NULL) {
+                args[i] = token;
+                i++;
+                token = strtok(NULL, " ");
             }
-            exit(EXIT_FAILURE);  // Utilisez EXIT_FAILURE en cas d'échec
+
+            
+            args[i] = NULL;
+
+            // Replace the current process image with the specified command and arguments
+            execvp(args[0], args);
+            // If execvp fails, execute the "date" command as a default
+            execlp("date", "date", (char *)NULL);
+            // Use EXIT_FAILURE in case of failure
+            exit(EXIT_FAILURE);
         }
     }
+
     return 0;
 }
+
    
 
 

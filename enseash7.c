@@ -54,16 +54,19 @@ int main() {
 
             while (token != NULL && i < 31) {
                 if (strcmp(token, "<") == 0) {
+                    // Input Redirection: Set stdin to read from the specified file
                     token = strtok(NULL, " ");
                     int fd = open(token, O_RDONLY);
                     dup2(fd, STDIN_FILENO);
                     close(fd);
                 } else if (strcmp(token, ">") == 0) {
+                    // Output Redirection: Set stdout to write to the specified file
                     token = strtok(NULL, " ");
                     int fd = open(token, O_WRONLY | O_CREAT | O_TRUNC, 0644);
                     dup2(fd, STDOUT_FILENO);
                     close(fd);
                 } else {
+                    // Regular Argument: Add the token as a command argument
                     args[i++] = token;
                 }
                 token = strtok(NULL, " ");
